@@ -197,8 +197,11 @@ button { font-family: 'Inter', system-ui, sans-serif; cursor: pointer; }
 }
 
 .pill { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 20px; letter-spacing: 0.04em; }
-.chip-btn { padding: 8px 14px; font-size: 13px; border-radius: 22px; border: 1px solid ${B.border}; background: ${B.panel}; color: ${B.text}; transition: all 0.15s; text-align: left; line-height: 1.35; }
-.chip-btn:hover { background: ${B.panelAlt}; border-color: ${B.teal}; color: #fff; }
+.chip-btn { display: inline-block; padding: 10px 18px; font-size: 13px; border-radius: 999px; border: 1px solid ${B.teal}; background: ${B.teal}; color: #fff; transition: all 0.15s; text-align: center; line-height: 1.35; font-weight: 500; max-width: 100%; white-space: normal; }
+.chip-btn:hover { background: ${B.tealDark}; border-color: ${B.tealDark}; color: #fff; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(26,138,143,0.25); }
+.starter-banner { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; background: linear-gradient(90deg, ${B.teal} 0%, ${B.tealDark} 100%); color: #fff; padding: 14px 20px; border-radius: 6px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(26,138,143,0.25); flex-wrap: wrap; }
+.starter-banner-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 500; letter-spacing: 0.01em; }
+.starter-banner-sub { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.85); font-weight: 500; }
 
 .tab-btn { padding: 10px 18px; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; border-radius: 0; border: none; background: transparent; color: ${B.textMuted}; border-bottom: 2px solid transparent; transition: all 0.15s; }
 .tab-btn.active { color: #fff; border-bottom: 2px solid ${B.teal}; }
@@ -224,7 +227,10 @@ button { font-family: 'Inter', system-ui, sans-serif; cursor: pointer; }
 .bubble-ai { background: ${B.panel}; border: 1px solid ${B.border}; border-radius: 14px 14px 14px 2px; padding: 0.65rem 0.9rem; font-size: 14px; line-height: 1.6; max-width: 82%; white-space: pre-wrap; color: ${B.text}; }
 .avatar { width: 32px; height: 32px; border-radius: 50%; background: ${B.teal}; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #fff; flex-shrink: 0; margin-top: 2px; letter-spacing: 0.04em; }
 
-.stat-card { background: ${B.panel}; border: 1px solid ${B.border}; border-radius: 4px; padding: 1rem; text-align: center; }
+.stat-card { background: #ffffff; border: 1px solid ${B.border}; border-radius: 6px; padding: 1.15rem 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+.stat-card .stat-label { color: #4a4a4a; }
+.stat-card .stat-value { color: ${B.tealDark}; }
+.stat-card .stat-sub { color: #6a6a6a; }
 
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: flex-start; justify-content: center; z-index: 1000; padding: 1.5rem 1rem; overflow-y: auto; }
 .modal { background: ${B.bg}; border: 1px solid ${B.border}; width: 100%; max-width: 680px; padding: 1.75rem; }
@@ -542,9 +548,12 @@ export default function App() {
         {tab === "chat" && (
           <div>
             {messages.length === 0 && (
-              <div style={{ marginBottom: "1.25rem" }}>
-                <p style={{ fontSize: 12, color: B.textMuted, margin: "0 0 0.75rem", letterSpacing: "0.06em", textTransform: "uppercase" }}>{t ? "Preguntas para comenzar" : "Conversation starters — tap to ask"}</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ marginBottom: "1.5rem" }}>
+                <div className="starter-banner">
+                  <span className="starter-banner-title">{t ? "Preguntas para comenzar" : "Conversation starters"}</span>
+                  <span className="starter-banner-sub">{t ? "toque para preguntar" : "tap any prompt to ask"}</span>
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "flex-start" }}>
                   {STARTERS[lang].map(q => <button key={q} className="chip-btn" onClick={() => send(q)} disabled={loading}>{q}</button>)}
                 </div>
               </div>
@@ -579,9 +588,9 @@ export default function App() {
                 { l: t ? "Desde" : "Since", v: "1992", s: t ? "ley federal" : "42 U.S.C. §256b" },
                 { l: t ? "Entidades" : "Covered entities", v: "50,000+", s: t ? "nacional" : "nationwide" }].map(c => (
                 <div key={c.l} className="stat-card">
-                  <p style={{ fontSize: 10, color: B.textMuted, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.08em" }}>{c.l}</p>
-                  <p className="serif" style={{ fontSize: 26, fontWeight: 500, margin: "0 0 2px", color: B.teal }}>{c.v}</p>
-                  <p style={{ fontSize: 11, color: B.textMuted, margin: 0 }}>{c.s}</p>
+                  <p className="stat-label" style={{ fontSize: 10, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{c.l}</p>
+                  <p className="serif stat-value" style={{ fontSize: 30, fontWeight: 500, margin: "0 0 4px" }}>{c.v}</p>
+                  <p className="stat-sub" style={{ fontSize: 12, margin: 0 }}>{c.s}</p>
                 </div>
               ))}
             </div>
