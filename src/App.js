@@ -197,8 +197,10 @@ button { font-family: 'Inter', system-ui, sans-serif; cursor: pointer; }
 }
 
 .pill { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 20px; letter-spacing: 0.04em; }
-.chip-btn { display: inline-block; padding: 10px 18px; font-size: 13px; border-radius: 999px; border: 1px solid ${B.teal}; background: ${B.teal}; color: #fff; transition: all 0.15s; text-align: center; line-height: 1.35; font-weight: 500; max-width: 100%; white-space: normal; }
+.chip-btn { display: inline-block; padding: 11px 20px; font-size: 13px; border-radius: 999px; border: 1px solid ${B.teal}; background: ${B.teal}; color: #fff; transition: all 0.15s; text-align: center; max-width: 100%; line-height: 1.35; cursor: pointer; font-weight: 500; line-height: 1.35; font-weight: 500; max-width: 100%; white-space: normal; }
 .chip-btn:hover { background: ${B.tealDark}; border-color: ${B.tealDark}; color: #fff; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(26,138,143,0.25); }
+.more-btn { display: inline-block; padding: 11px 20px; font-size: 12px; border-radius: 999px; border: 1px dashed ${B.teal}; background: transparent; color: ${B.teal}; cursor: pointer; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.15s; }
+.more-btn:hover { background: rgba(26,138,143,0.12); }
 .starter-banner { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; background: linear-gradient(90deg, ${B.teal} 0%, ${B.tealDark} 100%); color: #fff; padding: 14px 20px; border-radius: 6px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(26,138,143,0.25); flex-wrap: wrap; }
 .starter-banner-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 500; letter-spacing: 0.01em; }
 .starter-banner-sub { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.85); font-weight: 500; }
@@ -209,8 +211,9 @@ button { font-family: 'Inter', system-ui, sans-serif; cursor: pointer; }
 .card { background: ${B.panel}; border: 1px solid ${B.border}; border-radius: 4px; padding: 1rem 1.25rem; }
 .card-light { background: ${B.offwhite}; color: #000; border-radius: 4px; padding: 1rem 1.25rem; }
 
-.input-base { width: 100%; padding: 9px 12px; font-size: 14px; border: 1px solid ${B.border}; border-radius: 3px; background: ${B.panel}; color: ${B.text}; outline: none; }
-.input-base:focus { border-color: ${B.teal}; }
+.input-base { width: 100%; padding: 10px 14px; font-size: 14px; border: 1px solid #d4d4d4; border-radius: 6px; background: #ffffff; color: #1a1a1a; outline: none; }
+.input-base:focus { border-color: ${B.teal}; box-shadow: 0 0 0 3px rgba(26,138,143,0.15); }
+.input-base::placeholder { color: #888; }
 
 .btn-primary { padding: 9px 20px; font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; border: 1px solid ${B.teal}; border-radius: 3px; background: ${B.teal}; color: #fff; transition: background 0.15s; }
 .btn-primary:hover { background: ${B.tealDark}; }
@@ -231,6 +234,7 @@ button { font-family: 'Inter', system-ui, sans-serif; cursor: pointer; }
 .stat-card .stat-label { color: #4a4a4a; }
 .stat-card .stat-value { color: ${B.tealDark}; }
 .stat-card .stat-sub { color: #6a6a6a; }
+@media (max-width: 820px) { .advocacy-grid { grid-template-columns: 1fr !important; } .advocacy-grid > div:nth-child(2) { position: static !important; } }
 
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: flex-start; justify-content: center; z-index: 1000; padding: 1.5rem 1rem; overflow-y: auto; }
 .modal { background: ${B.bg}; border: 1px solid ${B.border}; width: 100%; max-width: 680px; padding: 1.75rem; }
@@ -333,39 +337,42 @@ function AdvocacyTab({ lang, state }) {
           {t ? "Clínicos y farmacéuticos tienen una voz única en la política del 340B. Aquí están las acciones con mayor apalancamiento para abogar por un programa que realmente llegue a los pacientes que debe servir." : "Clinicians and pharmacists bring a voice to 340B policy that no other stakeholder can replace. Below are the highest-leverage actions HCPs can take to ensure the program reaches the patients it was built to serve."}
         </p>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 10, marginBottom: "2rem" }}>
-        {ADVOCACY_ACTIONS.map((a, i) => (
-          <div key={i} className="card">
-            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", background: B.teal, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 600, flexShrink: 0 }}>{i + 1}</div>
-              <div>
-                <p style={{ fontWeight: 600, fontSize: 15, margin: "0 0 4px", color: "#fff" }}>{a.title}</p>
-                <p style={{ fontSize: 13, color: B.textMuted, margin: 0, lineHeight: 1.6 }}>{a.body}</p>
+      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: 20, marginBottom: "1.25rem" }} className="advocacy-grid">
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, margin: "0 0 2px", fontWeight: 600 }}>{t ? "Acciones con alto apalancamiento" : "High-leverage actions"}</p>
+          {ADVOCACY_ACTIONS.map((a, i) => (
+            <div key={i} className="card">
+              <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <div style={{ width: 28, height: 28, borderRadius: "50%", background: B.teal, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 600, flexShrink: 0 }}>{i + 1}</div>
+                <div>
+                  <p style={{ fontWeight: 600, fontSize: 15, margin: "0 0 4px", color: "#fff" }}>{a.title}</p>
+                  <p style={{ fontSize: 13, color: B.textMuted, margin: 0, lineHeight: 1.6 }}>{a.body}</p>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        <div style={{ position: "sticky", top: 16, alignSelf: "flex-start" }}>
+          <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, margin: "0 0 2px", fontWeight: 600 }}>{t ? "Plantilla de correo" : "Template email"}</p>
+          <h3 className="serif" style={{ fontSize: 22, fontWeight: 500, margin: "0 0 4px" }}>{t ? "Escriba a sus legisladores" : "Write to your lawmakers"}</h3>
+          <p style={{ fontSize: 13, color: B.textMuted, margin: "0 0 0.85rem", lineHeight: 1.6 }}>
+            {t ? "Edite los corchetes con su información y detalle local. Use 'Abrir email' para enviar desde su cliente, o 'Copiar' para pegarlo en un formulario web." : "Edit the bracketed fields with your info and local detail. Use 'Open email' to send from your client, or 'Copy' to paste into a web contact form."}
+            {state ? ` ${t ? "Incluimos contexto de" : "We've included"} ${state} ${t ? "si es relevante." : "context if relevant."}` : ""}
+          </p>
+          <div className="card">
+            <label style={{ fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: B.textMuted, display: "block", marginBottom: 4 }}>{t ? "Asunto" : "Subject"}</label>
+            <input className="input-base" value={subject} onChange={e => setSubject(e.target.value)} style={{ marginBottom: "0.85rem" }} />
+            <label style={{ fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: B.textMuted, display: "block", marginBottom: 4 }}>{t ? "Cuerpo" : "Body"}</label>
+            <textarea className="input-base" value={body} onChange={e => setBody(e.target.value)} rows={16} style={{ resize: "vertical", fontFamily: "inherit", lineHeight: 1.55 }} />
+            <div style={{ display: "flex", gap: 8, marginTop: "0.85rem", flexWrap: "wrap" }}>
+              <a className="btn-primary" href={mailto} style={{ textDecoration: "none", display: "inline-block" }}>{t ? "Abrir email" : "Open email"}</a>
+              <button className="btn-teal-outline" onClick={onCopy}>{copied ? (t ? "¡Copiado!" : "Copied!") : (t ? "Copiar" : "Copy")}</button>
+              <a className="btn-ghost" href="https://www.house.gov/representatives/find-your-representative" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>{t ? "Buscar representante" : "Find my U.S. rep"}</a>
+              <a className="btn-ghost" href="https://www.senate.gov/senators/senators-contact.htm" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>{t ? "Buscar senador" : "Find my U.S. senator"}</a>
+              <a className="btn-ghost" href="https://openstates.org/" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>{t ? "Legisladores estatales" : "Find my state legislators"}</a>
+            </div>
           </div>
-        ))}
-      </div>
-
-      <div style={{ marginBottom: "1rem" }}>
-        <h3 className="serif" style={{ fontSize: 22, fontWeight: 500, margin: "0 0 4px" }}>{t ? "Plantilla de correo para legisladores" : "Template email to your lawmakers"}</h3>
-        <p style={{ fontSize: 13, color: B.textMuted, margin: "0 0 0.75rem", lineHeight: 1.6 }}>
-          {t ? "Edite los corchetes con su información y el detalle local. Use 'Abrir email' para enviar desde su cliente, o 'Copiar' para pegarlo en un formulario de contacto web." : "Edit the bracketed fields with your details and a local example. Use 'Open email' to launch your mail client, or 'Copy' to paste into a web contact form."}
-          {state ? ` ${t ? "Incluimos contexto de" : "We've included"} ${state} ${t ? "si es relevante." : "context if relevant."}` : ""}
-        </p>
-      </div>
-
-      <div className="card" style={{ marginBottom: "1rem" }}>
-        <label style={{ fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: B.textMuted, display: "block", marginBottom: 4 }}>{t ? "Asunto" : "Subject"}</label>
-        <input className="input-base" value={subject} onChange={e => setSubject(e.target.value)} style={{ marginBottom: "0.85rem" }} />
-        <label style={{ fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: B.textMuted, display: "block", marginBottom: 4 }}>{t ? "Cuerpo" : "Body"}</label>
-        <textarea className="input-base" value={body} onChange={e => setBody(e.target.value)} rows={18} style={{ resize: "vertical", fontFamily: "inherit", lineHeight: 1.55 }} />
-        <div style={{ display: "flex", gap: 8, marginTop: "0.85rem", flexWrap: "wrap" }}>
-          <a className="btn-primary" href={mailto} style={{ textDecoration: "none", display: "inline-block" }}>{t ? "Abrir email" : "Open email"}</a>
-          <button className="btn-teal-outline" onClick={onCopy}>{copied ? (t ? "¡Copiado!" : "Copied!") : (t ? "Copiar" : "Copy")}</button>
-          <a className="btn-ghost" href="https://www.house.gov/representatives/find-your-representative" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>{t ? "Buscar representante" : "Find my U.S. rep"}</a>
-          <a className="btn-ghost" href="https://www.senate.gov/senators/senators-contact.htm" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>{t ? "Buscar senador" : "Find my U.S. senator"}</a>
-          <a className="btn-ghost" href="https://openstates.org/" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>{t ? "Legisladores estatales" : "Find my state legislators"}</a>
         </div>
       </div>
 
@@ -457,6 +464,7 @@ export default function App() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showBrief, setShowBrief] = useState(false);
+  const [showAllStarters, setShowAllStarters] = useState(false);
   const [tab, setTab] = useState("chat");
   const [lang, setLang] = useState("en");
   const [langWarning, setLangWarning] = useState(false);
@@ -548,17 +556,27 @@ export default function App() {
         {tab === "chat" && (
           <div>
             {messages.length === 0 && (
-              <div style={{ marginBottom: "1.5rem" }}>
+              <div style={{ marginBottom: "1.25rem" }}>
                 <div className="starter-banner">
                   <span className="starter-banner-title">{t ? "Preguntas para comenzar" : "Conversation starters"}</span>
                   <span className="starter-banner-sub">{t ? "toque para preguntar" : "tap any prompt to ask"}</span>
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "flex-start" }}>
-                  {STARTERS[lang].map(q => <button key={q} className="chip-btn" onClick={() => send(q)} disabled={loading}>{q}</button>)}
+                <div style={{ display: "flex", gap: 8, marginTop: "1rem", marginBottom: "1.5rem" }}>
+                  <input className="input-base" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && send()} placeholder={t ? "Escriba su pregunta sobre 340B..." : "Ask your 340B policy or clinical question..."} style={{ flex: 1, fontSize: 15, padding: "12px 16px" }} />
+                  <button className="btn-primary" onClick={() => send()} disabled={loading}>{t ? "Enviar" : "Send"}</button>
+                </div>
+                <p style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: B.textMuted, margin: "0 0 10px", fontWeight: 600 }}>{t ? "O pruebe una de estas" : "Or try one of these"}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "flex-start", alignItems: "center" }}>
+                  {STARTERS[lang].slice(0, showAllStarters ? STARTERS[lang].length : 5).map(q => <button key={q} className="chip-btn" onClick={() => send(q)} disabled={loading}>{q}</button>)}
+                  {STARTERS[lang].length > 5 && (
+                    <button className="more-btn" onClick={() => setShowAllStarters(!showAllStarters)}>
+                      {showAllStarters ? (t ? "Menos ▲" : "Show less ▲") : (t ? `+${STARTERS[lang].length - 5} más ▼` : `+${STARTERS[lang].length - 5} more ▼`)}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
-            <div style={{ minHeight: 180, marginBottom: "0.85rem" }}>
+            <div style={{ minHeight: messages.length === 0 ? 0 : 180, marginBottom: "0.85rem" }}>
               {messages.map((m, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: m.role === "user" ? "flex-end" : "flex-start", marginBottom: "0.75rem", gap: 8 }}>
                   {m.role === "assistant" && <div className="avatar">340B</div>}
@@ -573,10 +591,12 @@ export default function App() {
               )}
               <div ref={bottomRef} />
             </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input className="input-base" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && send()} placeholder={t ? "Haga una pregunta sobre 340B..." : "Ask a 340B question..."} disabled={loading} />
-              <button className="btn-primary" onClick={() => send()} disabled={loading}>{t ? "Enviar" : "Send"}</button>
-            </div>
+            {messages.length > 0 && (
+              <div style={{ display: "flex", gap: 8 }}>
+                <input className="input-base" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && send()} placeholder={t ? "Haga una pregunta sobre 340B..." : "Ask a 340B question..."} disabled={loading} />
+                <button className="btn-primary" onClick={() => send()} disabled={loading}>{t ? "Enviar" : "Send"}</button>
+              </div>
+            )}
             {messages.length > 0 && <button onClick={() => setMessages([])} style={{ marginTop: 8, fontSize: 12, color: B.textMuted, background: "none", border: "none", cursor: "pointer" }}>{t ? "Limpiar" : "Clear conversation"}</button>}
           </div>
         )}
